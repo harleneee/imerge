@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>IMerge Free PDF Merger</title>
+  <link rel="stylesheet" href="imerge.css">
+</head>
+<body>
+
+  <main class="app">
+    <header class="hero">
+      <h1>IMerge</h1>
+      <p class="subtitle">Merge multiple PDFs in filename order — fast, simple, and private.</p>
+    </header>
+
+    <section class="card">
+      <label class="file-drop" for="pdfs">
+        <input type="file" id="pdfs" multiple accept="application/pdf" />
+        <div class="file-drop-ui">
+          <div class="file-drop-title">Choose PDF files</div>
+          <div class="file-drop-sub">PDF only • Multiple files supported • Auto-sorted by filename</div>
+        </div>
+      </label>
+
+      <ul id="fileList" class="file-list" aria-live="polite"></ul>
+
+      <button class="merge-btn" onclick="mergePDFs()">Merge PDFs</button>
+
+      <p class="privacy">
+        🔒 Privacy: Your files are processed locally in your browser and are not uploaded anywhere.
+      </p>
+    </section>
+
+    <footer class="copyright">
+      <span>© 2026 IMerge. All rights reserved.</span>
+      <span class="dot">•</span>
+      <span>Built with <a href="https://pdf-lib.js.org/" target="_blank" rel="noreferrer">pdf-lib</a>.</span>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+
+  <script>
+    // Show file list after upload
+    const fileInput = document.getElementById("pdfs");
+    const fileList = document.getElementById("fileList");
+
+    fileInput.addEventListener("change", () => {
+      const files = [...fileInput.files];
+      fileList.innerHTML = "";
+      if (!files.length) return;
+
+      files.sort((a, b) => a.name.localeCompare(b.name));
+
+      files.forEach((f) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span class="file-name">${f.name}</span>
+          <span class="file-meta">${(f.size / 1024 / 1024).toFixed(2)} MB</span>
+        `;
+        fileList.appendChild(li);
+      });
+    });
+
+    async function mergePDFs() {
+      const files = document.getElementById("pdfs").files;
+      if (!files.length) return alert("Please choose PDF files.");
+
+      const sortedFiles = [...files].sort((a, b) => a.name.localeCompare(b.name));
+      const mergedPdf = await PDFLib.PDFDocument.create();
+
+      for (const file of sortedFiles) {
+        const bytes = await file.arrayBuffer();
+        const pdf = await PDFLib.PDFDocument.load(bytes);
+        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+        copiedPages.forEach((p) => mergedPdf.addPage(p));
+      }
+
+      const mergedBytes = await mergedPdf.save();
+      const blob = new Blob([mergedBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "merged.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+
+
+
+
+</html>
