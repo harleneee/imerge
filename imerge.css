@@ -1,0 +1,613 @@
+/* imerge.css */
+/* Blue + white professional UI for PDF Merger */
+
+:root {
+  --bg1: #f6fbff;
+  --bg2: #e9f4ff;
+
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+
+  --border: rgba(37, 99, 235, 0.18);
+  --shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  --shadow-soft: 0 10px 24px rgba(37, 99, 235, 0.12);
+
+  --radius: 16px;
+  --radius-sm: 12px;
+  --speed: 220ms;
+}
+
+/* Page background */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  background:
+    radial-gradient(1200px 600px at 15% 10%, var(--bg2), transparent 65%),
+    radial-gradient(900px 500px at 85% 25%, #d7ecff, transparent 60%),
+    linear-gradient(180deg, var(--bg1), #ffffff 65%);
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+}
+
+/* Main container (works even if your HTML uses a simple wrapper div) */
+.container,
+main,
+.wrapper,
+body > div {
+  width: min(720px, 92vw);
+}
+
+/* Card-like form area */
+form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 26px;
+  display: grid;
+  gap: 16px;
+  animation: popIn 420ms cubic-bezier(.2,.9,.2,1) both;
+  position: relative;
+  overflow: hidden;
+}
+
+form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(600px 240px at 20% 0%, rgba(59,130,246,0.18), transparent 60%),
+    radial-gradient(500px 220px at 80% 10%, rgba(96,165,250,0.16), transparent 55%);
+  pointer-events: none;
+}
+
+/* Title */
+h1 {
+  margin: 0 0 6px 0;
+  text-align: center;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+h1 span,
+h1 strong {
+  color: var(--blue-700);
+}
+
+/* Optional subtitle support if you add <p class="subtitle"> */
+.subtitle {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Input row */
+.file-row {
+  display: grid;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* File input styling (works across modern browsers) */
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  background: linear-gradient(180deg, #ffffff, var(--blue-50));
+  box-shadow: 0 8px 16px rgba(2, 132, 199, 0.08);
+  transition: border-color var(--speed), box-shadow var(--speed), transform var(--speed);
+  outline: none;
+}
+
+input[type="file"]:hover {
+  border-color: rgba(37, 99, 235, 0.36);
+}
+
+input[type="file"]:focus {
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18), 0 12px 20px rgba(2, 132, 199, 0.10);
+  transform: translateY(-1px);
+}
+
+/* Make the "Choose Files" button look modern */
+input[type="file"]::file-selector-button {
+  border: 1px solid rgba(255,255,255,0.65);
+  background: linear-gradient(180deg, var(--blue-600), var(--blue-700));
+  color: white;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-right: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(29, 78, 216, 0.22);
+  transition: transform var(--speed), filter var(--speed), box-shadow var(--speed);
+}
+
+input[type="file"]::file-selector-button:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 14px 22px rgba(29, 78, 216, 0.28);
+  transform: translateY(-1px);
+}
+
+input[type="file"]::file-selector-button:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 8px 14px rgba(29, 78, 216, 0.22);
+}
+
+/* Primary merge button */
+button,
+input[type="submit"] {
+  width: fit-content;
+  justify-self: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.55);
+  background: linear-gradient(180deg, var(--blue-600), var(--blue-700));
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--speed), filter var(--speed), box-shadow var(--speed);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover */
+button:hover,
+input[type="submit"]:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 14px 28px rgba(29, 78, 216, 0.24);
+  transform: translateY(-1px);
+}
+
+/* Focus */
+button:focus-visible,
+input[type="submit"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.22), 0 14px 28px rgba(29, 78, 216, 0.20);
+}
+
+/* CLICK ANIMATION: press + ripple */
+button:active,
+input[type="submit"]:active {
+  transform: translateY(1px) scale(0.98);
+  filter: brightness(0.98);
+}
+
+/* Ripple effect */
+button::after,
+input[type="submit"]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%) scale(0);
+  background: rgba(255, 255, 255, 0.45);
+  opacity: 0;
+  pointer-events: none;
+}
+
+button:active::after,
+input[type="submit"]:active::after {
+  animation: ripple 520ms ease-out;
+}
+
+/* Small helper text */
+small, .hint {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive spacing */
+@media (max-width: 420px) {
+  form { padding: 22px 18px; }
+  button, input[type="submit"] { width: 100%; }
+  input[type="file"]::file-selector-button { width: 100%; margin: 0 0 10px 0; }
+}
+
+/* Animations */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes ripple {
+  0%   { opacity: 0.0; transform: translate(-50%, -50%) scale(0); }
+  20%  { opacity: 0.55; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(18); }
+}
+
+/* ------------------------------ */
+/* NEW: Balanced centered container + attached file list + bigger button */
+/* Add these without removing your original styles */
+/* ------------------------------ */
+
+/* If you wrap your content in <div class="app"> ... </div> */
+.app {
+  width: min(920px, 92vw);
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+  padding-top: 30px;
+}
+
+/* If you use <h2> instead of <h1> */
+h2 {
+  text-align: center;
+  margin: 0;
+  font-size: clamp(20px, 2.4vw, 28px);
+  position: relative;
+  z-index: 1;
+}
+
+/* If you wrap the input + list + button in <div class="card"> */
+.card {
+  width: min(680px, 92vw); /* less wide, stays centered */
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(600px 240px at 20% 0%, rgba(59,130,246,0.14), transparent 60%),
+    radial-gradient(500px 220px at 80% 10%, rgba(96,165,250,0.12), transparent 55%);
+  pointer-events: none;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom file input wrapper (optional if you want it to look like a "drop" box) */
+.file-drop {
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  background: linear-gradient(180deg, #ffffff, var(--blue-50));
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.file-drop input[type="file"] {
+  display: none; /* hide the native full-width control */
+}
+
+.file-drop-ui {
+  display: grid;
+  gap: 4px;
+}
+
+.file-drop-title {
+  font-weight: 800;
+  color: var(--blue-700);
+}
+
+.file-drop-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Attached file list */
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.file-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+
+.file-name {
+  font-weight: 650;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 72%;
+}
+
+.file-meta {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Bigger merge button (only applies if you add class="merge-btn") */
+.merge-btn {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 999px;
+}
+
+/* Portfolio-ready layout */
+.app {
+  width: min(980px, 92vw);
+  display: grid;
+  gap: 18px;
+  padding: 22px 0;
+}
+
+.hero {
+  text-align: center;
+  display: grid;
+  gap: 6px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 42px);
+  letter-spacing: -0.03em;
+}
+
+.card {
+  width: min(680px, 92vw);
+  margin: 0 auto;
+}
+
+/* File drop area */
+.file-drop {
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  background: linear-gradient(180deg, #ffffff, var(--blue-50));
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.file-drop input[type="file"] { display: none; }
+
+.file-drop-title {
+  font-weight: 800;
+  color: var(--blue-700);
+}
+
+.file-drop-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Attached files list */
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.file-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+
+.file-name {
+  font-weight: 650;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 72%;
+}
+
+.file-meta {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Bigger primary button */
+.merge-btn {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 999px;
+}
+
+/* Privacy note */
+.privacy {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Footer */
+.copyright {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.8;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.copyright a {
+  color: var(--blue-700);
+  text-decoration: none;
+  font-weight: 650;
+}
+
+.copyright a:hover {
+  text-decoration: underline;
+}
+
+.dot { opacity: 0.6; }
+
+/* ---------------- */
+/* FILE PREVIEW CARD */
+/* ---------------- */
+
+.file-card{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.file-icon{
+font-size:22px;
+}
+
+.file-info{
+display:flex;
+flex-direction:column;
+}
+
+/* drag visual */
+
+.file-list li{
+cursor:grab;
+transition:all .2s ease;
+}
+
+.file-list li.dragging{
+opacity:.5;
+transform:scale(.98);
+}
+
+/* filename input */
+
+.filename-container{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.filename-container input{
+padding:10px;
+border-radius:10px;
+border:1px solid var(--border);
+font-size:14px;
+}
+
+/* ---------------- */
+/* LOADING SPINNER */
+/* ---------------- */
+
+.loading{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+margin-top:10px;
+}
+
+.hidden{
+display:none;
+}
+
+.spinner{
+width:32px;
+height:32px;
+border-radius:50%;
+border:4px solid var(--blue-100);
+border-top:4px solid var(--blue-600);
+animation:spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+to{
+transform:rotate(360deg);
+}
+}
+/* SUCCESS MODAL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:1000;
+}
+
+.modal-card{
+background:white;
+padding:30px;
+border-radius:16px;
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+text-align:center;
+display:flex;
+flex-direction:column;
+gap:12px;
+animation:popIn .3s ease;
+}
+
+.modal-card h2{
+margin:0;
+color:var(--blue-700);
+}
+
+.hidden{
+display:none;
+}
