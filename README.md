@@ -3,15 +3,16 @@ IMerge – Free PDF Merger
 A client-side PDF merging tool built with JavaScript and pdf-lib.
 
 Features:
-• Drag and drop upload
 
-• Reorder PDFs before merging
+  • Drag and drop upload
 
-• Remove files
+  • Reorder PDFs before merging
 
-• Custom output filename
+  • Remove files
 
-• Privacy-first (runs entirely in browser)
+  • Custom output filename
+
+  • Privacy-first (runs entirely in browser)
 
 Live Demo:
 https://harleneee.github.io/imerge/
