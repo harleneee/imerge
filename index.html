@@ -1,211 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<title>IMerge Free PDF Merger</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IMerge | Free PDF Merger</title>
+
 <link rel="stylesheet" href="imerge.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 </head>
+
 
 <body>
 
-<main class="app">
+<!-- BACKGROUND DECORATION -->
 
-<header class="hero">
+<div class="bg-blob blob1"></div>
+<div class="bg-blob blob2"></div>
+
+
+<div class="container">
+
+<header>
+
 <h1>IMerge</h1>
-<p class="subtitle">Merge multiple PDFs in filename order — fast, simple, and private.</p>
+
+<p class="subtitle">
+Merge multiple PDF files instantly — fast, private, and free.
+</p>
+
 </header>
+
 
 <section class="card">
 
-<label class="file-drop" for="pdfs">
+<label id="dropZone" class="drop-zone">
+
 <input type="file" id="pdfs" multiple accept="application/pdf">
-<div class="file-drop-ui">
-<div class="file-drop-title">Choose PDF files</div>
-<div class="file-drop-sub">PDF only • Drag to reorder after upload</div>
+
+<div class="drop-text">
+
+<h3>Drag & Drop PDFs</h3>
+
+<p>or click to upload files</p>
+
 </div>
+
 </label>
+
 
 <ul id="fileList" class="file-list"></ul>
 
-<div class="filename-container">
-<label>Rename merged file</label>
-<input type="text" id="filename" placeholder="example: merged-document">
-</div>
 
-<button class="merge-btn" onclick="mergePDFs()">Merge & Download</button>
+<input
+type="text"
+id="filename"
+class="filename"
+placeholder="Rename merged file (optional)"
+>
 
-<div id="loading" class="loading hidden">
+
+<button id="mergeBtn" class="merge-btn">
+
+Merge PDFs
+
+</button>
+
+
+<div id="progressContainer" class="progress-container hidden">
+
 <div class="spinner"></div>
-<p>Merging PDFs...</p>
-</div>
 
-<p class="privacy">
-🔒 Privacy: Files are processed locally in your browser.
-</p>
+<p>Merging PDFs...</p>
+
+</div>
 
 </section>
 
+
 <footer class="copyright">
-<span>© 2026 IMerge</span>
-<span class="dot">•</span>
-<span>Portfolio project by Harlene Bautista</span>
-</footer>
-
-</main>
-
-
-<!-- SUCCESS POPUP -->
-<div id="successModal" class="modal hidden">
-<div class="modal-card">
-
-<h2>✅ Done!</h2>
-<p>Your PDFs were merged successfully.</p>
-
-<button onclick="resetApp()" class="merge-btn">
-Merge Another PDF
-</button>
+      <span>© 2026 IMerge. All rights reserved.</span>
+      <span class="dot">•</span>
+      <span>Built with <a href="https://pdf-lib.js.org/" target="_blank" rel="noreferrer">pdf-lib</a>.</span>
+    </footer>
+  </main>
 
 </div>
+
+
+<!-- SUCCESS MODAL -->
+
+<div id="successModal" class="modal hidden">
+
+<div class="modal-card">
+
+<h2>Merge Complete</h2>
+
+<p>Your merged PDF is ready.</p>
+
+<button onclick="resetApp()">Merge Again</button>
+
+</div>
+
 </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
-
-<script>
-
-const fileInput = document.getElementById("pdfs")
-const fileList = document.getElementById("fileList")
-
-let filesArray = []
-
-fileInput.addEventListener("change", () => {
-
-filesArray = [...fileInput.files]
-
-renderFiles()
-
-})
-
-
-function renderFiles(){
-
-fileList.innerHTML = ""
-
-filesArray.forEach((file,index)=>{
-
-const li = document.createElement("li")
-li.draggable = true
-
-li.innerHTML = `
-<div class="file-card">
-<div class="file-icon">📄</div>
-<div class="file-info">
-<span class="file-name">${file.name}</span>
-<span class="file-meta">${(file.size/1024/1024).toFixed(2)} MB</span>
-</div>
-</div>
-`
-
-li.addEventListener("dragstart",()=>{
-li.classList.add("dragging")
-})
-
-li.addEventListener("dragend",()=>{
-li.classList.remove("dragging")
-})
-
-li.addEventListener("dragover",(e)=>{
-e.preventDefault()
-
-const dragging = document.querySelector(".dragging")
-const nodes = [...fileList.children]
-
-const currentIndex = nodes.indexOf(li)
-const dragIndex = nodes.indexOf(dragging)
-
-if(currentIndex !== dragIndex){
-
-filesArray.splice(currentIndex,0,filesArray.splice(dragIndex,1)[0])
-
-renderFiles()
-
-}
-
-})
-
-fileList.appendChild(li)
-
-})
-
-}
-
-
-async function mergePDFs(){
-
-if(!filesArray.length){
-
-alert("Please upload PDFs")
-
-return
-
-}
-
-document.getElementById("loading").classList.remove("hidden")
-
-const mergedPdf = await PDFLib.PDFDocument.create()
-
-for(const file of filesArray){
-
-const bytes = await file.arrayBuffer()
-
-const pdf = await PDFLib.PDFDocument.load(bytes)
-
-const copied = await mergedPdf.copyPages(pdf,pdf.getPageIndices())
-
-copied.forEach(p=>mergedPdf.addPage(p))
-
-}
-
-const mergedBytes = await mergedPdf.save()
-
-const blob = new Blob([mergedBytes],{type:"application/pdf"})
-
-const url = URL.createObjectURL(blob)
-
-const nameInput = document.getElementById("filename").value.trim()
-
-const fileName = nameInput ? nameInput+".pdf" : "merged.pdf"
-
-const a = document.createElement("a")
-
-a.href = url
-a.download = fileName
-a.click()
-
-URL.revokeObjectURL(url)
-
-document.getElementById("loading").classList.add("hidden")
-
-document.getElementById("successModal").classList.remove("hidden")
-
-}
-
-
-function resetApp(){
-
-filesArray = []
-
-fileInput.value = ""
-
-document.getElementById("filename").value = ""
-
-fileList.innerHTML = ""
-
-document.getElementById("successModal").classList.add("hidden")
-
-}
-
-</script>
+<script src="imerge.js"></script>
 
 </body>
+
 </html>
